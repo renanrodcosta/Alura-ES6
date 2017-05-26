@@ -62,14 +62,18 @@
     </table>
     <script src="js/app/models/Negociacao.js"></script>
     <script>
-        var n1 = new Negociacao(new Date(), 5, 700);
-        n1._quantidade = 1654654;
+        var data = new Date();
 
-        console.log(n1);
+        var n1 = new Negociacao(data, 5, 700);
+
+        data.setDate(11);
+        
         console.log(n1.volume);
         console.log(n1.quantidade);
         console.log(n1.data);
         console.log(n1.valor);
+
+
     </script>
 </body>
 
