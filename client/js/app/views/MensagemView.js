@@ -1,10 +1,7 @@
-class MensagemView{
-    constructor(elemento){
-        this._elemento = elemento
-    }
+class MensagemView extends View {
 
-    update(model){
-        this._elemento.innerHTML = this._template(model)
+    constructor(elemento){
+        super(elemento)
     }
 
     _template(model){
