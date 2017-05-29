@@ -6,8 +6,13 @@ class NegociacaoController{
         this._inputData = $("#data")
         this._inputQuantidade = $("#quantidade")
         this._inputValor = $("#valor")
+        
         this._listaNegociacoes = new ListaNegociacoes()
+        this._mensagem = new Mensagem()
+        
         this._negocioesView = new NegociacoesView($("#negociacoesView"))
+        this._mensagemView = new MensagemView($("#mensagemView"))
+
         this._negocioesView.update(this._listaNegociacoes)
     }
 
@@ -19,10 +24,12 @@ class NegociacaoController{
                                         this._inputValor.value)
 
         this._listaNegociacoes.adiciona(this._criaNegociacao())
-        this._limpaFormulario()
-
         this._negocioesView.update(this._listaNegociacoes)
         
+        this._mensagem.texto = "Negociação incluida com sucesso!"        
+        this._mensagemView.update(this._mensagem)
+
+        this._limpaFormulario()
     }
 
     _criaNegociacao(){
