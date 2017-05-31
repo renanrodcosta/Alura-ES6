@@ -7,7 +7,7 @@ class NegociacaoController{
         this._inputQuantidade = $("#quantidade")
         this._inputValor = $("#valor")
         
-        this._listaNegociacoes = new ListaNegociacoes()
+        this._listaNegociacoes = new ListaNegociacoes(model => this._negocioesView.update(model))
         this._mensagem = new Mensagem()
         
         this._negocioesView = new NegociacoesView($("#negociacoesView"))
@@ -24,7 +24,6 @@ class NegociacaoController{
                                         this._inputValor.value)
 
         this._listaNegociacoes.adiciona(this._criaNegociacao())
-        this._negocioesView.update(this._listaNegociacoes)
         
         this._mensagem.texto = "Negociação incluida com sucesso!"        
         this._mensagemView.update(this._mensagem)
@@ -34,7 +33,6 @@ class NegociacaoController{
 
     apagar(){
         this._listaNegociacoes.esvazia()
-        this._negocioesView.update(this._listaNegociacoes)
 
         this._mensagem.texto = "Negociações apagadas com sucesso!"        
         this._mensagemView.update(this._mensagem)
