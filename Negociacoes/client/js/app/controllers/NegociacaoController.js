@@ -32,6 +32,14 @@ class NegociacaoController{
         this._limpaFormulario()
     }
 
+    apagar(){
+        this._listaNegociacoes.esvazia()
+        this._negocioesView.update(this._listaNegociacoes)
+
+        this._mensagem.texto = "Negociações apagadas com sucesso!"        
+        this._mensagemView.update(this._mensagem)
+    }
+
     _criaNegociacao(){
         return new Negociacao(DataHelper.textoParaData(this._inputData.value),
                                         this._inputQuantidade.value,
