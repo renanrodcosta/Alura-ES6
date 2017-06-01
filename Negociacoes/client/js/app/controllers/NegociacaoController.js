@@ -7,49 +7,33 @@ class NegociacaoController{
         this._inputQuantidade = $("#quantidade")
         this._inputValor = $("#valor")
         
-        let self = this;
+        this._listaNegociacoes = ProxyFactory.criar(
+            new ListaNegociacoes(),
+            ['adiciona', 'esvazia'],
+            model => this._negocioesView.update(model))
 
-        this._listaNegociacoes = new Proxy(new ListaNegociacoes(), {
-            get(target, prop, receiver){
-                if(["adiciona", "esvazia"].includes(prop) && typeof(target[prop]) == typeof(Function())){
-                    return function() {                        
-                        Reflect.apply(target[prop], target, arguments)
-                        self._negocioesView.update(target)
-                    }
-                }                
-                return Reflect.get(target, prop, receiver)
-            }
-        })
-
-
-        this._mensagem = new Mensagem()
+        this._mensagem = ProxyFactory.criar(
+            new Mensagem(),
+            ['texto'],
+            model => this._mensagemView.update(model))
         
         this._negocioesView = new NegociacoesView($("#negociacoesView"))
         this._mensagemView = new MensagemView($("#mensagemView"))
 
         this._negocioesView.update(this._listaNegociacoes)
+        this._mensagemView.update(this._mensagem)
     }
 
     adicionar(event){
         event.preventDefault()    
-
-        let negociacao = new Negociacao(DataHelper.textoParaData(this._inputData.value),
-                                        this._inputQuantidade.value,
-                                        this._inputValor.value)
-
-        this._listaNegociacoes.adiciona(this._criaNegociacao())
-        
-        this._mensagem.texto = "Negociação incluida com sucesso!"        
-        this._mensagemView.update(this._mensagem)
-
+        this._listaNegociacoes.adiciona(this._criaNegociacao())        
+        this._mensagem.texto = "Negociação incluida com sucesso!" 
         this._limpaFormulario()
     }
 
     apagar(){
         this._listaNegociacoes.esvazia()
-
-        this._mensagem.texto = "Negociações apagadas com sucesso!"        
-        this._mensagemView.update(this._mensagem)
+        this._mensagem.texto = "Negociações apagadas com sucesso!"
     }
 
     _criaNegociacao(){
