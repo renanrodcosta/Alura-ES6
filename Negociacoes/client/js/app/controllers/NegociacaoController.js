@@ -7,12 +7,11 @@ class NegociacaoController{
         this._inputQuantidade = $("#quantidade")
         this._inputValor = $("#valor")
 
-        this._negocioesView = new NegociacoesView($("#negociacoesView"))
-        this._mensagemView = new MensagemView($("#mensagemView"))
+        this._listaNegociacoes = new Bind(
+            new ListaNegociacoes(), new NegociacoesView($("#negociacoesView")), 'adiciona', 'esvazia')
 
-        this._listaNegociacoes = new Bind(new ListaNegociacoes(), ['adiciona', 'esvazia'], this._negocioesView)
-
-        this._mensagem = new Bind(new Mensagem(), ['texto'], this._mensagemView)
+        this._mensagem = new Bind(
+            new Mensagem(), new MensagemView($("#mensagemView")), 'texto')
     }
 
     adicionar(event){
