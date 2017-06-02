@@ -21,6 +21,31 @@ class NegociacaoController{
         this._limpaFormulario()
     }
 
+    importar(){
+        let xhr = new XMLHttpRequest()
+        xhr.open('GET', '/negociacoes/semana')
+
+        xhr.onreadystatechange = () => {
+            if(xhr.readyState == 4){            
+                if(xhr.status == 200){                    
+                    let negociacoes = JSON.parse(xhr.responseText)
+
+                    negociacoes.map(negociacao => this._listaNegociacoes.adiciona(
+                        new Negociacao(
+                            new Date(negociacao.data), 
+                            negociacao.quantidade, 
+                            negociacao.valor)))
+
+                    this._mensagem.texto = "Importação efetuada com sucesso"
+                }else{
+                    this._mensagem.texto = "Não foi possível recuperar as informações do servidor"
+                    console.log(xhr.responseText)                    
+                }
+            }
+        }       
+        xhr.send()
+    }
+
     apagar(){
         this._listaNegociacoes.esvazia()
         this._mensagem.texto = "Negociações apagadas com sucesso!"
