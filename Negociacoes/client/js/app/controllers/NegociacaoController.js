@@ -6,22 +6,13 @@ class NegociacaoController{
         this._inputData = $("#data")
         this._inputQuantidade = $("#quantidade")
         this._inputValor = $("#valor")
-        
-        this._listaNegociacoes = ProxyFactory.criar(
-            new ListaNegociacoes(),
-            ['adiciona', 'esvazia'],
-            model => this._negocioesView.update(model))
 
-        this._mensagem = ProxyFactory.criar(
-            new Mensagem(),
-            ['texto'],
-            model => this._mensagemView.update(model))
-        
         this._negocioesView = new NegociacoesView($("#negociacoesView"))
         this._mensagemView = new MensagemView($("#mensagemView"))
 
-        this._negocioesView.update(this._listaNegociacoes)
-        this._mensagemView.update(this._mensagem)
+        this._listaNegociacoes = new Bind(new ListaNegociacoes(), ['adiciona', 'esvazia'], this._negocioesView)
+
+        this._mensagem = new Bind(new Mensagem(), ['texto'], this._mensagemView)
     }
 
     adicionar(event){
