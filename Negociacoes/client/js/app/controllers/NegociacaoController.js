@@ -7,11 +7,9 @@ class NegociacaoController{
         this._inputQuantidade = $("#quantidade")
         this._inputValor = $("#valor")
 
-        this._listaNegociacoes = new Bind(
-            new ListaNegociacoes(), new NegociacoesView($("#negociacoesView")), 'adiciona', 'esvazia')
+        this._listaNegociacoes = new Bind(new ListaNegociacoes(), new NegociacoesView($("#negociacoesView")), 'adiciona', 'esvazia')
 
-        this._mensagem = new Bind(
-            new Mensagem(), new MensagemView($("#mensagemView")), 'texto')
+        this._mensagem = new Bind(new Mensagem(), new MensagemView($("#mensagemView")), 'texto')
     }
 
     adicionar(event){
@@ -24,26 +22,17 @@ class NegociacaoController{
     importar(){
         let negociacoesService = new NegociacoesService()
 
-        negociacoesService.obterNegociacoesSemana()
-            .then(negociacoes => {
-                negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
-                this._mensagem.texto = "Impotação da semana obtida com sucesso."
-            })
-            .catch(erro => this._mensagem.texto = erro)
-
-        negociacoesService.obterNegociacoesSemanaAnterior()
-            .then(negociacoes => {
-                negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
-                this._mensagem.texto = "Impotação da semana obtida com sucesso."
-            })
-            .catch(erro => this._mensagem.texto = erro)
-
-        negociacoesService.obterNegociacoesSemanaRetrasada()
-            .then(negociacoes => {
-                negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
-                this._mensagem.texto = "Impotação da semana obtida com sucesso."
-            })
-            .catch(erro => this._mensagem.texto = erro)
+        Promise.all([
+            negociacoesService.obterNegociacoesSemana(), 
+            negociacoesService.obterNegociacoesSemanaAnterior(), 
+            negociacoesService.obterNegociacoesSemanaRetrasada()])
+        .then(negociacoes => {  
+            negociacoes
+                .reduce((arrayAchatado, array) => arrayAchatado.concat(array), [])
+                .forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
+            this._mensagem.texto = "Negociações importadas com sucesso"
+        })
+        .catch(erro => this._mensagem.texto = erro)
     }
 
     apagar(){
