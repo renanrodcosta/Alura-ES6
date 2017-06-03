@@ -24,33 +24,26 @@ class NegociacaoController{
     importar(){
         let negociacoesService = new NegociacoesService()
 
-        negociacoesService.obterNegociacoesSemana((erro, negociacoes) => {
-            if(erro){
-                this._mensagem.texto = erro
-                return
-            }
-
-            negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
-            
-            negociacoesService.obterNegociacoesSemanaAnterior((erro, negociacoes) => {
-                if(erro){
-                    this._mensagem.texto = erro
-                    return
-                }
-
+        negociacoesService.obterNegociacoesSemana()
+            .then(negociacoes => {
                 negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
-                
-                negociacoesService.obterNegociacoesSemanaRetrasada((erro, negociacoes) => {
-                    if(erro){
-                        this._mensagem.texto = erro
-                        return
-                    }
-
-                    negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
-                    this._mensagem.texto = "Negociações importadas com sucesso."
-                })
+                this._mensagem.texto = "Impotação da semana obtida com sucesso."
             })
-        })
+            .catch(erro => this._mensagem.texto = erro)
+
+        negociacoesService.obterNegociacoesSemanaAnterior()
+            .then(negociacoes => {
+                negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
+                this._mensagem.texto = "Impotação da semana obtida com sucesso."
+            })
+            .catch(erro => this._mensagem.texto = erro)
+
+        negociacoesService.obterNegociacoesSemanaRetrasada()
+            .then(negociacoes => {
+                negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
+                this._mensagem.texto = "Impotação da semana obtida com sucesso."
+            })
+            .catch(erro => this._mensagem.texto = erro)
     }
 
     apagar(){
