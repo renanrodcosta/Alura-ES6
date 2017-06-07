@@ -44,4 +44,15 @@ class NegociacoesService{
         })
     }
 
+    gravar(negociacao){
+        return new Promise((resolve, reject) => {
+            this._http.post('/negociacoes', negociacao)
+                .then(() => resolve())
+                .catch(erro => {
+                    console.log(erro)
+                    reject("Não foi possível gravar a lista de negociações")
+                })
+        })
+    }
+
 }
