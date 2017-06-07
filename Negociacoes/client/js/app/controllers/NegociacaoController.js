@@ -17,18 +17,23 @@ class NegociacaoController{
     }
 
     adicionar(event){
-        event.preventDefault()    
-        let negociacoesService = new NegociacoesService()
+        event.preventDefault()  
 
-        let negociacao = this._criaNegociacao()
+        try {
+            let negociacoesService = new NegociacoesService()
 
-        negociacoesService.gravar(this._criarModelPost(negociacao))
-            .then(() => {
-                this._listaNegociacoes.adiciona(negociacao)
-                this._mensagem.texto = "Negociação incluida com sucesso!"
-                this._limpaFormulario()
-            })  
-            .catch(erro => this._mensagem.texto = erro)                  
+            let negociacao = this._criaNegociacao()
+
+            negociacoesService.gravar(this._criarModelPost(negociacao))
+                .then(() => {
+                    this._listaNegociacoes.adiciona(negociacao)
+                    this._mensagem.texto = "Negociação incluida com sucesso!"
+                    this._limpaFormulario()
+                })  
+                .catch(erro => this._mensagem.texto = erro)
+        } catch (error) {
+            this._mensagem.texto = error
+        }                       
     }
 
     importar(){

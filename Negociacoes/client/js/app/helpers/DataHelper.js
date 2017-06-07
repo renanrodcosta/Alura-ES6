@@ -10,10 +10,10 @@ class DataHelper{
 
     static textoParaData(texto){
 
-        let formatoCorreto = !/\d{4}-\d{2}-\d{2}/.test(texto)
+        let formatoCorreto = !/\d{2}\/\d{2}\/\d{4}/.test(texto)
 
-        if(formatoCorreto) throw new Error("Deve estar no formato aaaa-mm-dd.")
+        if(formatoCorreto) throw new Error('Deve estar no formato dd/mm/aaaa')
 
-        return new Date(...texto.split("-").map((item, index) => item - index % 2 ))
+        return new Date(...texto.split("/").reverse().map((item, index) => item - index % 2 ))
     }
 }
