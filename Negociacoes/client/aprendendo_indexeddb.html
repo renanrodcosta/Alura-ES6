@@ -52,6 +52,33 @@
             }
         }
 
+        function listarTodos(){
+            let transaction = connection.transaction(['negociacoes'], 'readonly')
+            let store = transaction.objectStore('negociacoes')
+
+            let negociacoes = []
+
+            let cursor = store.openCursor()
+
+            cursor.onsuccess = event => {
+
+                let resultSet = event.target.result
+                
+                if (resultSet) {
+                    let registro = resultSet.value
+
+                    negociacoes.push(new Negociacao(registro._data, registro._quantidade, registro._valor))
+                    resultSet.continue()
+                } else {
+                    console.log(negociacoes)
+                }
+            }
+
+            cursor.onerror = event => {
+                console.log(event.target.error.name)
+            }
+        }
+
     </script>
 </body>
 </html>
