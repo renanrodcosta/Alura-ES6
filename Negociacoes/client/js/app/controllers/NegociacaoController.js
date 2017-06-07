@@ -3,11 +3,15 @@ class NegociacaoController{
     constructor() {
         let $ = document.querySelector.bind(document)
 
+        this._ultimoCriterioOrdem = ''
+
         this._inputData = $("#data")
         this._inputQuantidade = $("#quantidade")
         this._inputValor = $("#valor")
 
-        this._listaNegociacoes = new Bind(new ListaNegociacoes(), new NegociacoesView($("#negociacoesView")), 'adiciona', 'esvazia')
+        this._listaNegociacoes = new Bind(new ListaNegociacoes(), 
+                                          new NegociacoesView($("#negociacoesView")), 
+                                          'adiciona', 'esvazia', 'ordena', 'inverteOrdem')
 
         this._mensagem = new Bind(new Mensagem(), new MensagemView($("#mensagemView")), 'texto')
     }
@@ -22,7 +26,7 @@ class NegociacaoController{
     importar(){
         let negociacoesService = new NegociacoesService()
 
-        Promise.all([
+        Promise.all([   
             negociacoesService.obterNegociacoesSemana(), 
             negociacoesService.obterNegociacoesSemanaAnterior(), 
             negociacoesService.obterNegociacoesSemanaRetrasada()])
@@ -33,6 +37,15 @@ class NegociacaoController{
             this._mensagem.texto = "Negociações importadas com sucesso"
         })
         .catch(erro => this._mensagem.texto = erro)
+    }
+
+    ordenar(coluna){
+        if(coluna == this._ultimoCriterioOrdem){
+            this._listaNegociacoes.inverteOrdem()
+        } else {
+            this._listaNegociacoes.ordena((a, b) => a[coluna] - b[coluna])
+        }
+        this._ultimoCriterioOrdem = coluna
     }
 
     apagar(){
