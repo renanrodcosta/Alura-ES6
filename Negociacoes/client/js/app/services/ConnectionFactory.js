@@ -1,8 +1,9 @@
 var ConnectionFactory = (function () {
-    let stores = ['negociacoes']
-    let version = 4
-    let dbName = 'aluraframe'
+    const stores = ['negociacoes']
+    const version = 4
+    const dbName = 'aluraframe'
     let connection
+    let close
 
     return class ConnectionFactory {
 
@@ -20,7 +21,15 @@ var ConnectionFactory = (function () {
                 }
 
                 openRequest.onsuccess = e => {    
-                    if(!connection) connection = e.target.result
+                    if(!connection) {
+                        connection = e.target.result
+                        close = connection.close.bind(connection)
+                        connection.close = () => {
+                            throw new Error('Não é possivel chamar diretamente o close connection')
+                        }
+
+                    }
+
                     resolve(connection)
                 }
 
@@ -29,6 +38,13 @@ var ConnectionFactory = (function () {
                     reject(e.target.error.name)
                 }
             })
+        }
+
+        static closeConnection(){
+            if(close){
+                close()
+                close = null
+            }
         }
 
         static _createStores(connection) {
