@@ -19,21 +19,20 @@ class NegociacaoController{
     adicionar(event){
         event.preventDefault()  
 
-        try {
-            let negociacoesService = new NegociacoesService()
+        ConnectionFactory
+            .getConnection()
+            .then(connection => {
+                let negociacao = this._criaNegociacao()
 
-            let negociacao = this._criaNegociacao()
-
-            negociacoesService.gravar(this._criarModelPost(negociacao))
-                .then(() => {
-                    this._listaNegociacoes.adiciona(negociacao)
-                    this._mensagem.texto = "Negociação incluida com sucesso!"
-                    this._limpaFormulario()
-                })  
-                .catch(erro => this._mensagem.texto = erro)
-        } catch (error) {
-            this._mensagem.texto = error
-        }                       
+                new NegociacaoDao(connection)
+                    .adiciona(negociacao)
+                    .then(() => {
+                        this._listaNegociacoes.adiciona(negociacao)
+                        this._mensagem.texto = "Negociação incluida com sucesso!"
+                        this._limpaFormulario()
+                    })
+            })       
+            .catch(erro => this._mensagem.texto = erro)                    
     }
 
     importar(){
@@ -68,8 +67,8 @@ class NegociacaoController{
 
     _criaNegociacao(){
         return new Negociacao(DataHelper.textoParaData(this._inputData.value),
-                                        this._inputQuantidade.value,
-                                        this._inputValor.value)
+                                        parseInt(this._inputQuantidade.value),
+                                        parseFloat(this._inputValor.value))
     }
 
     _criarModelPost(negociacao){
