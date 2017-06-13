@@ -48,6 +48,10 @@ class NegociacaoController{
         let negociacoesService = new NegociacoesService()
 
         negociacoesService.obterNegociacoes()
+            .then(negociacoes => 
+                    negociacoes.filter(negociacao => 
+                        !this._listaNegociacoes.negociacoes.some(negociacaoExistente => 
+                            JSON.stringify(negociacaoExistente) == JSON.stringify(negociacao))))
             .then(negociacoes => {
                 negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
                 this._mensagem.texto = "Negociações importadas com sucesso"
