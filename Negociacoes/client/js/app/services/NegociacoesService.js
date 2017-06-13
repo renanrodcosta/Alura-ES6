@@ -55,4 +55,16 @@ class NegociacoesService{
         })
     }
 
+    obterNegociacoes(){
+        return new Promise((resolve, reject) => {
+            Promise.all([   
+                this.obterNegociacoesSemana(), 
+                this.obterNegociacoesSemanaAnterior(), 
+                this.obterNegociacoesSemanaRetrasada()])
+            .then(negociacoes =>   
+                resolve(negociacoes.reduce((arrayAchatado, array) => arrayAchatado.concat(array), [])))
+            .catch(erro => reject(erro))
+        })
+    }
+
 }
