@@ -70,7 +70,6 @@ class NegociacaoController{
     }
 
     apagar(){
-        console.log('apagar')
         ConnectionFactory
             .getConnection()
             .then(connection => new NegociacaoDao(connection))
