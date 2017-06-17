@@ -15,6 +15,8 @@ class NegociacaoController{
 
         this._mensagem = new Bind(new Mensagem(), new MensagemView($("#mensagemView")), 'texto')
 
+        this._service = new NegociacoesService()
+
         this._init()
     }
 
@@ -23,7 +25,7 @@ class NegociacaoController{
 
          let negociacao = this._criaNegociacao();
 
-        new NegociacoesService()
+        this._service
             .cadastra(negociacao)
             .then(mensagem => {
                 this._listaNegociacoes.adiciona(negociacao);
@@ -33,9 +35,7 @@ class NegociacaoController{
     }
 
     importar(){
-        let negociacoesService = new NegociacoesService()
-
-        negociacoesService.obterNegociacoes()
+        this._service.obterNegociacoes()
             .then(negociacoes => 
                     negociacoes.filter(negociacao => 
                         !this._listaNegociacoes.negociacoes.some(negociacaoExistente => 
@@ -57,10 +57,7 @@ class NegociacaoController{
     }
 
     apagar(){
-        ConnectionFactory
-            .getConnection()
-            .then(connection => new NegociacaoDao(connection))
-            .then(dao => dao.apagarTodos())
+        this._service.apaga()
             .then(mensagem => {
                 this._listaNegociacoes.esvazia()
                 this._mensagem.texto = mensagem
@@ -90,10 +87,8 @@ class NegociacaoController{
     }
 
     _init(){
-        ConnectionFactory
-            .getConnection()
-            .then(connection => new NegociacaoDao(connection))
-            .then(dao => dao.listarTodos())
+        this._service
+            .lista()
             .then(negociacoes => 
                         negociacoes.forEach(negociacao => 
                             this._listaNegociacoes.adiciona(negociacao)))

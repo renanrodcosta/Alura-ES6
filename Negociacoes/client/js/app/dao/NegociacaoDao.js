@@ -54,7 +54,6 @@ class NegociacaoDao {
 
     apagarTodos(){
         return new Promise((resolve, reject) => {
-
             let request = this._connection
                     .transaction([this._store], 'readwrite')
                     .objectStore(this._store)
