@@ -1,4 +1,7 @@
-class NegociacoesView  extends View {
+import {View} from './View.js'
+import {DataHelper} from '../helpers/DataHelper.js'
+
+export class NegociacoesView  extends View {
 
     constructor(elemento){
         super(elemento)

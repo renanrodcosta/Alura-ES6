@@ -1,4 +1,13 @@
-class NegociacaoController{
+import {ListaNegociacoes} from '../models/ListaNegociacoes.js'
+import {Mensagem} from '../models/Mensagem.js'
+import {NegociacoesView} from '../views/NegociacoesView.js'
+import {MensagemView} from '../views/MensagemView.js'
+import {NegociacoesService} from '../services/NegociacoesService.js'
+import {DataHelper} from '../helpers/DataHelper.js'
+import {Bind} from '../helpers/Bind.js'
+import {Negociacao} from '../models/Negociacao.js'
+
+export class NegociacaoController{
 
     constructor() {
         let $ = document.querySelector.bind(document)
