@@ -3,7 +3,7 @@
 System.register(['../models/ListaNegociacoes.js', '../models/Mensagem.js', '../views/NegociacoesView.js', '../views/MensagemView.js', '../services/NegociacoesService.js', '../helpers/DataHelper.js', '../helpers/Bind.js', '../models/Negociacao.js'], function (_export, _context) {
     "use strict";
 
-    var ListaNegociacoes, Mensagem, NegociacoesView, MensagemView, NegociacoesService, DataHelper, Bind, Negociacao, _createClass, NegociacaoController;
+    var ListaNegociacoes, Mensagem, NegociacoesView, MensagemView, NegociacoesService, DataHelper, Bind, Negociacao, _createClass, NegociacaoController, negociacaoController;
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -48,7 +48,7 @@ System.register(['../models/ListaNegociacoes.js', '../models/Mensagem.js', '../v
                 };
             }();
 
-            _export('NegociacaoController', NegociacaoController = function () {
+            NegociacaoController = function () {
                 function NegociacaoController() {
                     _classCallCheck(this, NegociacaoController);
 
@@ -166,9 +166,14 @@ System.register(['../models/ListaNegociacoes.js', '../models/Mensagem.js', '../v
                 }]);
 
                 return NegociacaoController;
-            }());
+            }();
 
-            _export('NegociacaoController', NegociacaoController);
+            negociacaoController = new NegociacaoController();
+            function currentInstance() {
+                return negociacaoController;
+            }
+
+            _export('currentInstance', currentInstance);
         }
     };
 });

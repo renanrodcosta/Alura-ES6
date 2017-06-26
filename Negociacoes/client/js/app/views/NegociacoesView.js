@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['./View.js', '../helpers/DataHelper.js'], function (_export, _context) {
+System.register(['./View.js', '../helpers/DataHelper.js', '../controllers/NegociacaoController.js'], function (_export, _context) {
     "use strict";
 
-    var View, DataHelper, _createClass, NegociacoesView;
+    var View, DataHelper, currentInstance, _createClass, NegociacoesView;
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -40,6 +40,8 @@ System.register(['./View.js', '../helpers/DataHelper.js'], function (_export, _c
             View = _ViewJs.View;
         }, function (_helpersDataHelperJs) {
             DataHelper = _helpersDataHelperJs.DataHelper;
+        }, function (_controllersNegociacaoControllerJs) {
+            currentInstance = _controllersNegociacaoControllerJs.currentInstance;
         }],
         execute: function () {
             _createClass = function () {
@@ -66,13 +68,19 @@ System.register(['./View.js', '../helpers/DataHelper.js'], function (_export, _c
                 function NegociacoesView(elemento) {
                     _classCallCheck(this, NegociacoesView);
 
-                    return _possibleConstructorReturn(this, (NegociacoesView.__proto__ || Object.getPrototypeOf(NegociacoesView)).call(this, elemento));
+                    var _this = _possibleConstructorReturn(this, (NegociacoesView.__proto__ || Object.getPrototypeOf(NegociacoesView)).call(this, elemento));
+
+                    elemento.addEventListener('click', function (event) {
+                        if (event.target.nodeName == 'TH') currentInstance().ordenar(event.target.textContent.toLowerCase());
+                    });
+
+                    return _this;
                 }
 
                 _createClass(NegociacoesView, [{
                     key: 'template',
                     value: function template(model) {
-                        return '<table class="table table-hover table-bordered">\n        <thead>\n            <tr>\n                <th onclick="negociacaoController.ordenar(\'data\')">DATA</th>\n                <th onclick="negociacaoController.ordenar(\'quantidade\')">QUANTIDADE</th>\n                <th onclick="negociacaoController.ordenar(\'valor\')">VALOR</th>\n                <th onclick="negociacaoController.ordenar(\'volume\')">VOLUME</th>\n            </tr>\n        </thead>\n        <tbody>\n            ' + model.negociacoes.map(function (negociacao) {
+                        return '<table class="table table-hover table-bordered">\n        <thead>\n            <tr>\n                <th>DATA</th>\n                <th>QUANTIDADE</th>\n                <th>VALOR</th>\n                <th>VOLUME</th>\n            </tr>\n        </thead>\n        <tbody>\n            ' + model.negociacoes.map(function (negociacao) {
                             return '\n                <tr>\n                    <td>' + DataHelper.dataParaTexto(negociacao.data) + '</td>\n                    <td>' + negociacao.quantidade + '</td>\n                    <td>' + negociacao.valor + '</td>\n                    <td>' + negociacao.volume + '</td>\n                </tr>\n            ';
                         }).join('') + '\n        </tbody>\n        <tfoot>\n            <td colspan="3"></td>\n            <td>\n                ' + model.negociacoes.reduce(function (total, negociacao) {
                             return total + negociacao.volume;

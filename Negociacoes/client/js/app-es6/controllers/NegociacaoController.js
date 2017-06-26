@@ -7,7 +7,7 @@ import {DataHelper} from '../helpers/DataHelper.js'
 import {Bind} from '../helpers/Bind.js'
 import {Negociacao} from '../models/Negociacao.js'
 
-export class NegociacaoController{
+class NegociacaoController{
 
     constructor() {
         let $ = document.querySelector.bind(document)
@@ -105,3 +105,10 @@ export class NegociacaoController{
         }, 3000)
     }
 }
+
+let negociacaoController = new NegociacaoController()
+
+export function currentInstance(){
+    return negociacaoController
+} 
+
